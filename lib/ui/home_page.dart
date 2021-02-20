@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_movie_app/ui/media_list/media_list.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -43,6 +44,11 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
+      ),
+      body: PageView(
+        children: [
+          MediaList(),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: _getFooterItems(),
