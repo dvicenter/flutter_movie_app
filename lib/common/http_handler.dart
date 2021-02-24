@@ -23,4 +23,26 @@ class HttpHandler {
     return getJson(uri).then(
         ((data) => data['results'].map<Media>((item) => Media(item)).toList()));
   }
+
+  Future<List<Media>> fecthMoviesUpcoming() {
+    var uri = Uri.https(_baseUrl, '3/movie/upcoming', {
+      'api_key': API_KEY,
+      'page': '1',
+      'language': _language,
+    });
+
+    return getJson(uri).then(
+        ((data) => data['results'].map<Media>((item) => Media(item)).toList()));
+  }
+
+  Future<List<Media>> fecthMoviesTopRated() {
+    var uri = Uri.https(_baseUrl, '3/movie/top_rated', {
+      'api_key': API_KEY,
+      'page': '1',
+      'language': _language,
+    });
+
+    return getJson(uri).then(
+        ((data) => data['results'].map<Media>((item) => Media(item)).toList()));
+  }
 }

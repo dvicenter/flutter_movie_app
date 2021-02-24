@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_movie_app/ui/media_list/media_list.dart';
+import 'package:flutter_movie_app/ui/media_list/media_top_rated.dart';
+import 'package:flutter_movie_app/ui/media_list/media_upcoming.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -7,6 +9,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int _selectedIndex = 0;
+  final PageStorageBucket _bucket = PageStorageBucket();
+
+  final List<Widget> _childrenPageView = [
+    MediaList(),
+    MediaUpcoming(),
+    MediaTopRated(),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,36 +33,18 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              child: Text('Header'),
-            ),
-            ListTile(
-              title: Text('Peliculas'),
-              trailing: Icon(Icons.local_movies),
-            ),
-            ListTile(
-              title: Text('Televisión'),
-              trailing: Icon(Icons.live_tv),
-            ),
-            ListTile(
-              title: Text('Cerrar'),
-              trailing: Icon(Icons.close),
-              onTap: () => Navigator.of(context).pop(),
-            ),
-          ],
-        ),
-      ),
-      body: PageView(
-        children: [
-          MediaList(),
-        ],
+      body: PageStorage(
+        child: _childrenPageView[_selectedIndex],
+        bucket: _bucket,
       ),
       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
         items: _getFooterItems(),
+        onTap: (int index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
       ),
     );
   }
