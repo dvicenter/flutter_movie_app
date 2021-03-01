@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter_movie_app/common/constants.dart';
 import 'package:flutter_movie_app/model/media.dart';
 import 'package:flutter_movie_app/model/media_detail.dart';
+import 'package:flutter_movie_app/model/media_video.dart';
 import 'package:http/http.dart' as http;
 
 final String _baseUrl = 'api.themoviedb.org';
@@ -54,5 +55,16 @@ class HttpHandler {
     });
 
     return getJson(uri).then(((data) => MediaDetail(data)));
+  }
+
+  Future<List<MediaVideo>> fecthVideoMovie(int id) {
+    var uri = Uri.https(_baseUrl, '3/movie/$id/videos', {
+      'api_key': API_KEY,
+      'language': _language,
+    });
+
+    return getJson(uri).then(((data) => data['results']
+        .map<MediaVideo>((item) => MediaVideo.fromJson(item))
+        .toList()));
   }
 }

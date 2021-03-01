@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_movie_app/common/http_handler.dart';
 import 'package:flutter_movie_app/model/media.dart';
+import 'package:flutter_movie_app/model/media_video.dart';
 import 'package:flutter_movie_app/ui/media_list/media_list_detail.dart';
 
 class MediaListItem extends StatelessWidget {
@@ -8,15 +9,19 @@ class MediaListItem extends StatelessWidget {
 
   MediaListItem(this.media);
 
+  _onTapMedia(BuildContext context) async {
+    var _mediaDetail = await HttpHandler().fecthMovieDetail(media.id);
+    var _mediaVideo = await HttpHandler().fecthVideoMovie(media.id);
+
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => MediaListDetail(_mediaDetail, _mediaVideo)));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
       child: GestureDetector(
-        onTap: () async {
-          var _mediaDetail = await HttpHandler().fecthMovieDetail(media.id);
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => MediaListDetail(_mediaDetail)));
-        },
+        onTap: () => _onTapMedia(context),
         child: Column(
           children: [
             Container(
